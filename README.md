@@ -1,407 +1,515 @@
-# Why S.O.L.I.D ?
+# Why should we use the SOLID principles?
 
-The broad goal of the SOLID principles is to **reduce dependencies so that engineers change one area of software without
-impacting others.** Additionally, they’re intended to make designs easier to understand, maintain, and extend.
+Using the SOLID principles in your application is beneficial for a variety of reasons. These principles provide a set of guidelines and best practices for designing and organizing your code, and they can lead to numerous advantages, including:
 
-Using these design principles makes it easier for software engineers to avoid issues and to build **adaptive, effective,
-and agile software.**
+1. **Maintainability**: SOLID principles encourage clean and modular code. By adhering to these principles, your codebase becomes more organized and easier to maintain. This simplifies bug fixes, updates, and feature additions.
 
-# Problems & Solution using SOLID
+2. **Flexibility and Extensibility**: SOLID principles promote code that is open for extension and closed for modification (Open-Closed Principle). This makes it easier to add new features or make changes without affecting existing code. You can extend functionality without rewriting large portions of the code.
 
-**Readable:** We are constantly reading old code as part of the
-effort to write code. We spend more time reading
-than writing code. This becomes more complex day by day when
-more code is added & team grows.
+3. **Reusability**: SOLID principles encourage the creation of modular and well-structured code. These modular components can often be reused in different parts of your application or in other projects.
 
-**Testable:** It should be easy to write automated tests that
-assert the system’s behavior. The profound reason is that we
-don’t want to spend too much time verifying that the system is
-effective. Running manual tests are very costlier than building software.
+4. **Readability and Understandability**: Code following SOLID principles tends to be more readable and understandable. This makes it easier for you and your team to collaborate, debug, and maintain the codebase.
 
-**Extensible:** It should be easy to add additional functionality
-to the system. A big part of this comes
-from readability. Readability is a necessary but not a sufficient
-element to enable extensibility. We implement SOLID patterns which enable readability.
+5. **Testability**: SOLID principles make code more testable. The separation of concerns and clear interfaces allows you to write unit tests for individual components of your application, which can help catch bugs early and ensure that the application functions as expected.
 
-**Robust:** Adding additional functionality should not
-introduce much risk of breaking existing functionality.
+6. **Reduced Code Duplication**: SOLID principles often lead to reduced code duplication since you're encouraged to create reusable and shared components. This can result in a smaller codebase, easier maintenance, and fewer bugs due to inconsistencies in duplicated code.
 
-**Maintainable:** When a defect is reported, it should be easy
-to track it down and fix it.
+7. **Scalability**: A well-organized codebase, as encouraged by SOLID principles, is easier to scale. As your application grows, you can add new features, modules, and components without causing major disruptions.
 
-By Applying S.O.L.I.D we can achieve all these things that mentioned above.
+8. **Collaboration**: When different team members work on the same project, SOLID principles can help maintain a consistent coding style and structure. This makes it easier for developers to understand and collaborate on each other's code.
+
+9. **Reduced Technical Debt**: Following SOLID principles from the start can help avoid the accumulation of technical debt, which can lead to costly and time-consuming refactoring in the future.
+
+10. **Maintained Quality**: Code that follows SOLID principles often results in higher quality software. It's less error-prone, easier to understand, and more stable, leading to a better user experience.
+
+11. **Reduced Development Time**: While adhering to SOLID principles might require more initial effort, it can reduce development time and debugging time in the long run. The time saved on maintenance and bug fixing can be substantial.
+
+In summary, the SOLID principles promote good software design practices that can lead to improved code quality, maintainability, and overall development efficiency. While they may require more thought and effort initially, the long-term benefits in terms of reduced bugs, easier maintenance, and extensibility make them an excellent framework for building reliable and scalable applications.
 
 # What is SOLID?
 
-**SRP** - **S**ingle **R**esponsibility **P**rinciple  
-A class should do one thing and therefore it should have only a single reason to change.
+SOLID is an acronym that represents a set of five principles for designing and writing maintainable and scalable software. These principles were introduced by Robert C. Martin and are widely accepted in the field of software engineering to improve the quality of object-oriented code. Each letter in the SOLID acronym represents one of these principles:
 
-**Open-Closed Principle**  
-Classes should be open for extension and closed to modification.
+**1. Single Responsibility Principle (SRP):**
+   This principle states that a class should have only one reason to change. In other words, a class should have a single responsibility or job. By adhering to this principle, you ensure that your code is more modular and easier to maintain, as changes to one aspect of the system do not affect unrelated parts.
 
-**Liskov Substitution Principle**  
-Super class should be replacable by it's sub classs.
+**2. Open-Closed Principle (OCP):**
+   The Open-Closed Principle suggests that software entities (classes, modules, functions, etc.) should be open for extension but closed for modification. It encourages you to design your code in a way that new functionality can be added through extension (e.g., subclassing) without altering existing code. This reduces the risk of introducing bugs when making changes.
 
-**Interface Segregation Principle**   
-Segregation means keeping things separated, and the Interface Segregation Principle is about separating the interfaces.
+**3. Liskov Substitution Principle (LSP):**
+   The Liskov Substitution Principle states that objects of a derived class should be able to replace objects of the base class without affecting the correctness of the program. In other words, if you have a base class and you create a subclass, the subclass should be a true "is-a" relationship with the base class and should honor the contracts of the base class.
 
-**Dependency Inversion Principle**   
-Classes should depend upon **interfaces or abstract classes** instead of concrete classes and functions.
+**4. Interface Segregation Principle (ISP):**
+   This principle advises that client-specific interfaces should be preferred over general-purpose interfaces. In essence, it suggests that you should not force clients to implement methods they don't use. Instead, you should create smaller, specific interfaces that cater to the needs of the client.
 
-# Single Responsibility Principle
+**5. Dependency Inversion Principle (DIP):**
+   The Dependency Inversion Principle promotes the idea that high-level modules should not depend on low-level modules; both should depend on abstractions. In other words, you should depend on abstractions (interfaces or abstract classes) rather than concrete implementations. This allows for flexibility, easier testing, and better separation of concerns.
 
-**SRP** also helps to have less Merge conflict as everything will be separated and place in separated class, There will
-be less merge conflicts.
+By following these SOLID principles, developers can create software that is easier to understand, maintain, and extend. It also promotes better code organization and design practices, leading to more robust and adaptable software systems.
 
 ### Basic Example
 
-![UML Product Class](images/uml_product_class.png)
+# Single Responsibility Principle (SRP)
+Certainly, let's consider an example where the Single Responsibility Principle (SRP) is violated by having a Flutter widget class that accesses a local database or web service to manage tasks. Then, I'll provide a solution where we separate the UI state and the service, adhering to SRP.
 
-This `Product` object violates the SRP principle. Product class should not have the business
-responsibility like `calculateRetailPrice()` or `calculateBusinessPrice()`
+**SRP Violation Example:**
 
-### Solution
+In this example, the `TaskListWidget` class is responsible for both rendering the UI and managing tasks from a local database or web service. This is an SRP violation because the widget should focus solely on UI presentation, and data management should be handled separately.
 
-Create separate `Calculator` class so changes become easy and introduce less merge conflicts.
+```dart
+class TaskListWidget extends StatefulWidget {
+  @override
+  _TaskListWidgetState createState() => _TaskListWidgetState();
+}
 
-![UML Product Class Separation](images/uml_srp_production_solution.png)
+class _TaskListWidgetState extends State<TaskListWidget> {
+  final List<Task> tasks = [];  // UI state mixed with data management
 
-so, final result will be this
+  @override
+  void initState() {
+    super.initState();
+    // Access a local database or web service to retrieve tasks
+    tasks.addAll(getTasksFromDatabaseOrService());
+  }
 
-![UML Final Product Class of SRP](images/uml_final_srp_product.png)
-
-### Another Example with Code
-
-```kotlin
-class Invoice(
-    val book: Book,
-    val quantity: Int,
-    val discountRate: Double,
-    val taxRate: Double
-) {
-    val total: Double
-
-    init {
-        total = calculateTotal()
-    }
-
-    fun calculateTotal(): Double {
-        val price: Double = (book.price - book.price * discountRate) * quantity
-        return price * (1 + taxRate)
-    }
-
-    // Violation: #1 - printing invoice should not be Invoice responsibility
-    fun printInvoice() {
-        println(quantity.toString() + "x " + book.name + " " + book.price + "$")
-        println("Discount Rate: $discountRate")
-        println("Tax Rate: $taxRate")
-        println("Total: $total")
-    }
-
-    // Violation: #2 - saving file should not be Invoice responsibility
-    fun saveToFile(filename: String?) {
-        // Creates a file with given name and writes the invoice
-    }
+  @override
+  Widget build(BuildContext context) {
+    // Render the UI based on tasks
+    return ListView.builder(
+      itemCount: tasks.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(tasks[index].title),
+          // ...
+        );
+      },
+    );
+  }
 }
 ```
-### Solution
-Create 2 classes `InvoicePrinter` & `InvoicePersistance` to delegate the separated responsibility
 
-```kotlin
-class InvoicePrinter(val invoice: Invoice) {
-    
-        fun print() {
-            println(((invoice.quantity + "x " + invoice.book.name).toString() + " " + invoice.book.price).toString() + " $")
-            System.out.println("Discount Rate: " + invoice.discountRate)
-            System.out.println("Tax Rate: " + invoice.taxRate)
-            System.out.println("Total: " + invoice.total + " $")
+**SRP-Adhering Solution:**
+
+To adhere to SRP, we'll separate the UI state and the service responsible for managing tasks.
+
+1. **Task Service (Single Responsibility)**:
+
+   Create a `TaskService` class responsible for managing tasks, which may involve accessing a local database or web service.
+
+   ```dart
+   class TaskService {
+     Future<List<Task>> getTasks() {
+       // Access a local database or web service to retrieve tasks
+       return getTasksFromDatabaseOrService();
+     }
+   }
+   ```
+
+2. **Task List Widget (Single Responsibility)**:
+
+   The widget should be responsible only for rendering the UI based on the tasks, and it shouldn't manage data retrieval. It uses the `TaskService` to retrieve tasks.
+
+   ```dart
+   class TaskListWidget extends StatefulWidget {
+     @override
+     _TaskListWidgetState createState() => _TaskListWidgetState();
+   }
+
+   class _TaskListWidgetState extends State<TaskListWidget> {
+     final TaskService taskService = TaskService();  // Separated service
+
+     @override
+     Widget build(BuildContext context) {
+       return FutureBuilder<List<Task>>(
+         future: taskService.getTasks(),
+         builder: (context, snapshot) {
+           if (snapshot.connectionState == ConnectionState.waiting) {
+             return CircularProgressIndicator();
+           } else if (snapshot.hasError) {
+             return Text('Error: ${snapshot.error}');
+           } else {
+             final tasks = snapshot.data ?? [];
+
+             return ListView.builder(
+               itemCount: tasks.length,
+               itemBuilder: (context, index) {
+                 return ListTile(
+                   title: Text(tasks[index].title),
+                   // ...
+                 );
+               },
+             );
+           }
+         },
+       );
+     }
+   }
+   ```
+
+With this separation of concerns, the `TaskListWidget` class is focused on UI presentation, while the `TaskService` class handles the management of tasks, including data retrieval. This adheres to the Single Responsibility Principle, making the code more maintainable and modular.
+
+# Open Close Principles(OCP)
+**OCP Violation Example:**
+
+Let's consider a code example that violates the Open-Closed Principle. Suppose you have a class `Order` that calculates the total cost of an order. Initially, it only supports calculating the total cost of products, but it doesn't support discounts. To add discounts, you modify the existing class:
+
+```java
+class Order {
+    private List<Product> products;
+
+    public Order(List<Product> products) {
+        this.products = products;
+    }
+
+    public double calculateTotal() {
+        double total = 0;
+        for (Product product : products) {
+            total += product.getPrice();
         }
-    }
-```
-
-```kotlin
-class InvoicePersistence(val invoice: Invoice) {
-    
-    fun saveToFile(filename: String?) {
-        // Creates a file with given name and writes the invoice
-    }
-}
-```
-
-```kotlin
-class Invoice(
-    val book: Book,
-    val quantity: Int,
-    val discountRate: Double,
-    val taxRate: Double
-) {
-    private val total: Double
-
-    init {
-        total = calculateTotal()
+        return total;
     }
 
-    fun calculateTotal(): Double {
-        val price: Double = (book.price - book.price * discountRate) * quantity
-        return price * (1 + taxRate)
+    // Violation: Modifying the existing class to add discount calculation
+    public double calculateTotalWithDiscount(double discount) {
+        double total = calculateTotal();
+        return total * (1 - discount);
     }
 }
 ```
 
-So `main.kt` function will be
-```kotlin
+In this example, you've violated the Open-Closed Principle by modifying the existing `Order` class to add a discount calculation method. This modification can introduce errors in the existing code and makes it less extensible for future changes.
 
-fun main(args: Array<String>) {
-    val book = Book(
-        name = "Clean Architecture",
-        price = 1090.0
-    )
-    val invoice = Invoice(
-        book = book,
-        quantity = 1,
-        discountRate = 1.2,
-        taxRate = 15
-    )
-    
-    val invoicePrinter = InvoicePrinter(invoice)
-    invoicePrinter.print()
-    
-    val invoicePersistence = InvoicePersistence(invoice)
-    invoicePersistence.saveToFile()
+**OCP-Adhering Solution:**
+
+To adhere to the Open-Closed Principle, you can use the strategy pattern to separate the calculation of the total cost and the application of discounts:
+
+```java
+interface TotalCalculator {
+    double calculateTotal(List<Product> products);
 }
 
-data class Book(
-    val name : String,
-    val price : Double
-)
+class DefaultTotalCalculator implements TotalCalculator {
+    public double calculateTotal(List<Product> products) {
+        double total = 0;
+        for (Product product : products) {
+            total += product.getPrice();
+        }
+        return total;
+    }
+}
 
-```
+class DiscountedTotalCalculator implements TotalCalculator {
+    public double calculateTotal(List<Product> products) {
+        double total = new DefaultTotalCalculator().calculateTotal(products);
+        return total * 0.9; // Apply a 10% discount
+    }
+}
 
-# Open-Closed Principle
-Let's assume, after first release Product Owner comes to us and want to add a new feature. From now on, we need to also save the invoice to server.  
-Seems like easy solution, right? Without thinking further we want to make this easy change. So, we open our `InvoicePersistence` class and add a new method,
+class Order {
+    private List<Product> products;
+    private TotalCalculator totalCalculator;
 
-```kotlin
-class InvoicePersistence(val invoice: Invoice) {
-    
-    fun saveToFile(filename: String?) {
-        // Creates a file with given name and writes the invoice
+    public Order(List<Product> products, TotalCalculator totalCalculator) {
+        this.products = products;
+        this.totalCalculator = totalCalculator;
     }
 
-    fun saveToServer(filename: String?) {
-        // Implementation of saving file to server
+    public double calculateTotal() {
+        return totalCalculator.calculateTotal(products);
     }
 }
 ```
 
-### Problem
-Now, you broke 2 rules,  
-**1. Single Responsibility Principle:**  *A class should be only one reason to change.*  
-Look at the code, we are totally having a new reason now. `saveToServer()` which is totally different from saving invoice to a file locally.
+With this solution, the `Order` class is open for extension but closed for modification. You can easily add new strategies for calculating the total cost, such as different discount strategies, without altering the existing code. This adheres to the Open-Closed Principle and makes the system more flexible and maintainable.
 
-**2. Open-Closed Principle:** *A class should be open for extension & close for modification*.   
-We're not extending a `saveToServer()` feature. We're modifying this class to adapt a new feature which break this rule.
+# Liskov Substitution Priciples(LSP)
+**LSP Violation Example:**
 
-### Solution
-We can introduce and take advantage of `OOP's` interface to fix the problem with `Open-Closed` principle.
+Let's consider a scenario where there's a violation of the Liskov Substitution Principle (LSP). Suppose you have a class hierarchy for different types of birds. You have a base class `Bird` and derived classes `Penguin` and `Ostrich`. The Liskov Substitution Principle is violated when a subclass behavior is not consistent with that of the base class.
 
-```kotlin
-interface InvoiceSaver {
-    fun save()
-} 
-```
-
-Now, let's implement this interface and add the requirements in two separated class so that it follows `SRP`
-```kotlin
-class Server : InvoiceSaver {
-    override fun save() {
-        // Save to server
-    }
-}
-
-class FileSystem : InvoiceSaver {
-    override fun save() {
-        // Save to file
-    }
-}
-```
-
-Now, we also need to add what type of save strategy we'll use. So, let's create `enum` for invoice *SavingType*
-
-```kotlin
-enum class SaveType {
-    File, Server
-}
-```
-
-Now, we have to completely refactor the `InvoicePersistence` class to make it abid the SRP & Open-Closed principle.
-So, refactor it to this,
-```kotlin
-class InvoicePersistence() {
-    fun store(invoice: Invoice): InvoiceSaver = when (invoice.saveType) {
-        SaveType.File -> Server()
-        SaveType.Server -> FileSystem()
-    }
-}
-```
-
-Without refactoring/changing the code, we can not introduce new principles.
-
-When a new feature or change request comes and the code is not `Open-Closed` principle compliant then we should
-first refactor the code to accept the change as Kent Beck said,
->make the change easy, then make the easy change.
-
-Everything is now set, so the final `main.kt` will be
-```kotlin
-fun main(args: Array<String>) {
-    val book = Book(
-        name = "Clean Architecture", price = 1090.0
-    )
-    val invoice = Invoice(
-        book = book, quantity = 1, discountRate = 1.2, taxRate = 15.0, saveType = SaveType.File
-    )
-    
-    // InvoicePersistence stores the invoice based on SaveType and
-    // delegates it implementation on a separate class
-    val invoicePersistence = InvoicePersistence()
-    invoicePersistence.store(invoice)
-
-}
-```
-### Handle change request
-Now, if tomorrow Product Owner asks for saving the `invoice` to **LocalDatabase**, the cnange will be very easy for us to add without risking other codes,
-
-we just new to add `LocalDatabase` save type to `SaveType` enum class and we need to create another class which only be responsible for saving the invoice to local database. Here's the code,
-
-1. Add a new save type `LocalDatabase`
-
-```diff
-enum class SaveType {
--    File, Server
-+    File, Server, LocalDatabase, 
-}
-```
-
-2. Add `LocalDatabase` class to implement saving file to local database
-```kotlin
-class LocalDatabase: InvoiceSaver {
-    override fun save() {
-        // Save to local database
-    }
-}
-```
-
-3. Add `LocalDatabase` to `InvoicePersistence` for specifying saving strategy
-```diff
-class InvoicePersistence() {
-    fun store(invoice: Invoice): InvoiceSaver = when (invoice.saveType) {
-        SaveType.File -> Server()
-        SaveType.Server -> FileSystem()
-+        SaveType.LocalDatabase -> LocalDatabase()
-    }
-}
-```
-
-That's all. Our `InvoicePersistence` is now capabale of saving invoice to even LocalDatabase.   
-
-Check that when we implemented new saving to database feature, we didn't, *modified any of our class* and only *added new feature change* to new class. So, there's no risk of breaking other parts of the code as we almost never touched other code.
-
-
-# Liskov Substitution Principle
-**Original Theory:** 
->Let φ(x) be a property provable about objects x of type T. Then φ(y) should be true for objects y of type S where S is a subtype of T.
-
-Hard to digest right? so, simply 
->Super class should be replacable by it's sub classs.
-
-Let's try with a different and easy example this time. Assume that we have a `Bird` class that has common behavior of any bird like `fly()`.  
-So, In our program if we want to create any kind of `Bird` like `Parrot` our obvious choice is to extend `Bird` so that it has those bird's behavior/characteristic. Lets' see the code,   
-
-```kotlin
+```java
 class Bird {
-    fun fly() {
-        // implementation of fly
-    }
-    
-    //...
-}
-```
-
-So, if we introduce a new bird called, `Parrot` this will be the code,
-```kotlin
-class Parrot : Bird() {
-    //...
-}
-```
-And it's totally fine. But what if we need to create `Ostrich` which can not fly. So,
-if we do something like this,
-```kotlin
-class Ostrich : Bird() {
-    override fun fly() {
-        throw Exception("I can't fly :( ")
-    }
-}
-```
-
-So this is the violation of Liskov's theory. If we want to `fly()` a bird and have written our code that takes `Bird` as input then passing `Ostrich` to that break the code,
-
-```kotlin
-fun main(args: Array<String>) {
-    val parrot = Parrot()
-    val ostrich = Ostrich()
-    
-    val action = Action()
-    action.makeBirdFly(parrot) // that's fine
-    
-    action.makeBirdFly(ostrich) // oops! liskov substitution
-}
-
-class Action {
-    fun makeBirdFly(bird: Bird) {
-        bird.fly()
+    void fly() {
+        // Base implementation
     }
 }
 
-```
+class Penguin extends Bird {
+    @Override
+    void fly() {
+        // Violation: Penguins cannot fly, so this method should not be here.
+        throw new UnsupportedOperationException("Penguins can't fly");
+    }
+}
 
-
-# Interface Segregation Principle
->Segregation means keeping things separated, and the Interface Segregation Principle is about separating the interfaces.
-
-Let's take the above `Bird` example. As you've seen previously how `Ostrich` bird example violated `LS` principle. We'll be solving that using `Interface Segregation Principle`.  
-
-We can say `LS` principle is the theory of a problem that we can solve using Interface Segregation.
-
-Remember, `Ostrich` can't fly so by extending `Bird` we violate `LS` principle. So to solve this we can introduce a new interface called `Flyable`
-
-```kotlin
-interface Flyable {
-    fun fly()
+class Ostrich extends Bird {
+    // Violation: Ostriches don't implement the fly method, but they should.
 }
 ```
 
-Our goal is to separate the common behavior using interface for birds here. Now we'll create two kind of birds,
+In this example, both the `Penguin` and `Ostrich` classes violate the Liskov Substitution Principle. The `Penguin` class throws an exception in its `fly` method, and the `Ostrich` class does not provide an implementation for the `fly` method. These issues can lead to unexpected behavior when treating all birds as instances of the `Bird` class.
 
-```kotlin
+**LSP-Adhering Solution:**
+
+To adhere to the Liskov Substitution Principle, we should ensure that derived classes can be used interchangeably with the base class without altering the correctness of the program. In this case, we can redefine the class hierarchy:
+
+```java
 class Bird {
-    // bird characteristics & behaviors
+    // Common bird behavior
 }
 
-class FlyingBird: Bird() , Flyable {
-    override fun fly() {
+class FlyingBird extends Bird {
+    void fly() {
+        // Common flying bird implementation
     }
 }
-```
-So, now `Parrot` will extend `FlyingBird` which is a bird kind that also fly but `Ostrich` only extends `Bird` as it can't fly
 
-```kotlin
-class Ostrich : Bird() {
-    // it's bird that can't fly
-}
-
-class Parrot : FlyingBird() {
-    // it's a bird that can fly too
+class NonFlyingBird extends Bird {
+    // Common non-flying bird implementation
 }
 ```
 
-So, we just solved `LS` problem using `ISP`. 
+With this hierarchy, we have separate classes for birds that can fly and birds that cannot, and both adhere to the Liskov Substitution Principle. You can create derived classes such as `Penguin` and `Ostrich` that inherit from `NonFlyingBird` without violating the LSP:
+
+```java
+class Penguin extends NonFlyingBird {
+    // Penguin-specific behavior
+}
+
+class Ostrich extends NonFlyingBird {
+    // Ostrich-specific behavior
+}
+```
+
+In this solution, the Liskov Substitution Principle is not violated because both `Penguin` and `Ostrich` are consistent with the behavior of their base class (`NonFlyingBird`). This ensures that you can use instances of the derived classes interchangeably with the base class without issues.
+
+# Interface Segregation Principles(ISP)
+In a Flutter application, the Interface Segregation Principle (ISP) can be applied to widget interfaces to ensure that widgets don't need to implement methods they don't use. Let's consider a scenario in a Flutter app:
+
+**Scenario: Custom Button Widgets**
+
+Suppose you're creating custom button widgets in a Flutter application. You have a generic `Button` interface that defines common button properties and interactions, but not all buttons require the same set of properties or interactions.
+
+**ISP Violation:**
+
+Initially, you might define a single interface for all buttons:
+
+```dart
+abstract class Button {
+  String label;
+  Color color;
+  void onPressed();
+}
+```
+
+In this example, this generic `Button` interface includes a label, color, and an `onPressed` method. However, not all buttons in your app need a color or have an `onPressed` action.
+
+```dart
+class PrimaryButton implements Button {
+  String label;
+  Color color;
+  void onPressed() {
+    // Implementation for primary button
+  }
+}
+
+class SecondaryButton implements Button {
+  String label;
+  Color color;
+  void onPressed() {
+    // Implementation for secondary button
+  }
+}
+
+class IconButton implements Button {
+  String label;
+  Color color;
+  void onPressed() {
+    // Implementation for icon button
+  }
+}
+```
+
+In this scenario, all button classes implement the same interface with properties that are not relevant to their specific types. This is an ISP violation because it forces widgets to implement methods or properties that they don't use.
+
+**ISP-Adhering Solution:**
+
+To adhere to the Interface Segregation Principle, you can create more granular and specific interfaces for different types of buttons, so that each button class only needs to implement the relevant methods or properties.
+
+```dart
+abstract class Button {
+  String label;
+}
+
+abstract class ActionButton extends Button {
+  void onPressed();
+}
+
+abstract class ColorButton extends Button {
+  Color color;
+}
+```
+
+Now, you can define your button classes more effectively, implementing only the interfaces that are appropriate for their type:
+
+```dart
+class PrimaryButton implements ActionButton, ColorButton {
+  String label;
+  Color color;
+  void onPressed() {
+    // Implementation for primary button
+  }
+}
+
+class SecondaryButton implements ActionButton {
+  String label;
+  void onPressed() {
+    // Implementation for secondary button
+  }
+}
+
+class IconButton implements ActionButton {
+  String label;
+  void onPressed() {
+    // Implementation for icon button
+  }
+}
+```
+
+With this design, button classes are more focused on the specific properties and interactions they need, adhering to the Interface Segregation Principle and making your Flutter app's code more modular and maintainable.
+
+# Dependency Inversion Principles
+
+**Scenario: Data Fetching in a Flutter Weather App**
+
+Suppose you are developing a weather app in Flutter that retrieves weather data from various sources, such as a local database and external APIs. To adhere to the Dependency Inversion Principle, you want to abstract the data source dependencies to ensure that high-level components, like the UI, don't depend directly on the specific data sources.
+
+**DIP Violation:**
+
+Initially, your app might have a high-level component, like a WeatherWidget, that directly interacts with concrete data source classes:
+
+```dart
+import 'package:flutter/material.dart';
+
+class WeatherWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // DIP Violation: WeatherWidget depends directly on concrete data sources.
+    final localData = LocalDatabase.fetchWeatherData();
+    final apiData = WeatherApiService.fetchWeatherData();
+
+    // Widget rendering using localData and apiData
+  }
+}
+
+class LocalDatabase {
+  static Map<String, dynamic> fetchWeatherData() {
+    // Implementation for fetching data from a local database
+  }
+}
+
+class WeatherApiService {
+  static Map<String, dynamic> fetchWeatherData() {
+    // Implementation for fetching data from an external API
+  }
+}
+```
+
+**DIP-Adhering Solution:**
+
+To adhere to the Dependency Inversion Principle, you can introduce abstractions (interfaces or abstract classes) for data sources and use dependency injection:
+
+```dart
+import 'package:flutter/material.dart';
+
+abstract class WeatherDataSource {
+  Future<Map<String, dynamic>> fetchWeatherData();
+}
+
+class LocalDatabase implements WeatherDataSource {
+  @override
+  Future<Map<String, dynamic>> fetchWeatherData() {
+    // Implementation for fetching data from a local database
+  }
+}
+
+class WeatherApiService implements WeatherDataSource {
+  @override
+  Future<Map<String, dynamic>> fetchWeatherData() {
+    // Implementation for fetching data from an external API
+  }
+}
+
+class WeatherRepository {
+  final WeatherDataSource localDataSource;
+  final WeatherDataSource apiDataSource;
+
+  WeatherRepository({
+    required this.localDataSource,
+    required this.apiDataSource,
+  });
+
+  Future<Map<String, dynamic>> getWeatherData(bool useLocalData) async {
+    if (useLocalData) {
+      return localDataSource.fetchWeatherData();
+    } else {
+      return apiDataSource.fetchWeatherData();
+    }
+  }
+}
+
+class WeatherBloc {
+  final WeatherRepository repository;
+
+  WeatherBloc({required this.repository});
+
+  Future<Map<String, dynamic>> getWeatherData(bool useLocalData) async {
+    return repository.getWeatherData(useLocalData);
+  }
+}
+
+class WeatherWidget extends StatelessWidget {
+  final WeatherBloc bloc;
+
+  WeatherWidget({required this.bloc});
+
+  @override
+  Widget build(BuildContext context) {
+    // Using the WeatherBloc to fetch data without direct dependency on data sources.
+    return FutureBuilder<Map<String, dynamic>>(
+      future: bloc.getWeatherData(false),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final data = snapshot.data ?? {};
+
+          // Widget rendering using data
+        }
+      },
+    );
+  }
+}
+
+void main() {
+  final localDataSource = LocalDatabase();
+  final apiDataSource = WeatherApiService();
+  final repository = WeatherRepository(
+    localDataSource: localDataSource,
+    apiDataSource: apiDataSource,
+  );
+  final bloc = WeatherBloc(repository: repository);
+
+  runApp(MaterialApp(
+    home: WeatherWidget(bloc: bloc),
+  ));
+}
+```
+
+In this adhering-to-DIP solution:
+
+- We've introduced abstractions for data sources (`WeatherDataSource`) and concrete implementations (`LocalDatabase` and `WeatherApiService`).
+- The `WeatherRepository` class abstracts data retrieval by using both local and API data sources. It's injected into the `WeatherBloc`.
+- The `WeatherWidget` uses the `WeatherBloc` to fetch data without a direct dependency on data sources, adhering to the Dependency Inversion Principle.
